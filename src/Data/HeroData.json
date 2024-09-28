@@ -11,13 +11,13 @@
         "title" : "LIMITED EDITION",
         "subtitile" : "Exclusive Collection",
         "text" : "DISCOVER NOW",
-        "image" : "/assets/tshirt.jpg"
+        "image" : "/assets/manu.jpg"
     },
     {
         "id" : 3 ,
         "title" : "TRENDING",
         "subtitile" : "Summer Special",
         "text" : "EXPLORE MORE",
-        "image" : "/assets/bra.jpg"
+        "image" : "/assets/kp.jpg"
     }
 ]
