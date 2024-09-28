@@ -9,7 +9,9 @@ const Navbar = () => {
   return (
     <div className="flex items-center justify-between py-5 font-medium">
       <div>
-        <img src="/assets/logo.png" alt="logo" className="w-36" />
+        <Link to="/">
+          <img src="/assets/logo.png" alt="logo" className="w-36" />
+        </Link>
       </div>
       <div>
         <ul className="hidden sm:flex text-sm items-center gap-7 ">
@@ -70,7 +72,9 @@ const Navbar = () => {
 
         <div
           className={`fixed top-0 right-0 bottom-0 bg-white z-50 transition-all duration-500 ease-in-out transform ${
-            mobileMenu ? "w-full opacity-100 translate-x-0" : "w-0 opacity-0 translate-x-full"
+            mobileMenu
+              ? "w-full opacity-100 translate-x-0"
+              : "w-0 opacity-0 translate-x-full"
           }`}
         >
           <div className="flex flex-col text-gray-600 font-normal mt-3 ">

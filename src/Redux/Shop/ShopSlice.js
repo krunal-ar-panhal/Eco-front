@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import Product from '../../Pages/Product'
+import Product from '../../Data/ProductData.json'
+console.log(Product);
+
 
 const initialState = {
-    Product,
+    Products: Product,
     currency : "₹",
     delievery_fee : 10
 };
