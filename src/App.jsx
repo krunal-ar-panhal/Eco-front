@@ -12,12 +12,14 @@ import Signup from "./Pages/Signup";
 import Product from "./Pages/Product";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
+import Searchbox from "./Components/Searchbox";
 
 const App = () => {
   return (
     <BrowserRouter>
       <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
         <Navbar/>
+        <Searchbox/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
