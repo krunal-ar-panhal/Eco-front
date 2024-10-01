@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 
 const ProductItem = ({id,image,price,name}) => {
 
-    console.log("product id",id);
     
 
     const { currency } = useSelector((state) => state.shop)

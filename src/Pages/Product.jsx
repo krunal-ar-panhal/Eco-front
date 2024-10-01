@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Motion from "../Components/Motion";
 import RelatedProducts from "../Components/RelatedProducts";
+import { addToCart } from "../Redux/Shop/ShopSlice";
 
 const Product = () => {
   const { productId } = useParams();
-  console.log("particular product id page", productId);
   const { Products, currency } = useSelector((state) => state.shop);
-  const [productData, setProductData] = useState(null); // Change to null
+  const cartItems = useSelector((state) => state.shop.cartItems);
+  console.log("Current Cart Items:", cartItems);
+
+  const dispatch = useDispatch();
+  const [productData, setProductData] = useState(null);
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
 
@@ -17,8 +21,6 @@ const Product = () => {
       if (item.id === parseInt(productId)) {
         setProductData(item);
         setImage(item.image[0]);
-        console.log("product data:", item);
-        console.log("testing", item.image);
       }
     });
   };
@@ -89,9 +91,15 @@ const Product = () => {
                 ))}
               </div>
             </div>
-            <button className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700">
+            <button
+              onClick={() => {
+                dispatch(addToCart({ itemId: productData.id, size }));
+              }}
+              className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700"
+            >
               ADD TO CART
             </button>
+
             <hr className="mt-8 sm:w-4/5 bg-slate-500" />
             <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
               <p>100% Original</p>

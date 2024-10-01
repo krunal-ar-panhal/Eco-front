@@ -1,8 +1,11 @@
 import React from 'react'
+import Motion from '../Components/Motion'
 
 const PlaceOrder = () => {
   return (
-    <div>PlaceOrder</div>
+    <Motion>
+      <div>PlaceOrder</div>
+    </Motion>
   )
 }
 

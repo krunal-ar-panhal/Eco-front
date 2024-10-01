@@ -13,11 +13,13 @@ import Product from "./Pages/Product";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import Searchbox from "./Components/Searchbox";
+import {Toaster} from 'react-hot-toast'
 
 const App = () => {
   return (
     <BrowserRouter>
       <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+      <Toaster position="bottom-right" />
         <Navbar/>
         <Searchbox/>
         <Routes>
