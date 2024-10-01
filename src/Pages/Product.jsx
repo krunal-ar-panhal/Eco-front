@@ -60,7 +60,11 @@ const Product = () => {
           <div className="flex-1">
             <h1 className="font-medium text-2xl mt-2">{productData.name} </h1>
             <div className="flex items-center gap-1 mt-2">
-              {/* Star ratings here */}
+              <img src="/assets/star_icon.png" alt="star_icon" />
+              <img src="/assets/star_icon.png" alt="star_icon" />
+              <img src="/assets/star_icon.png" alt="star_icon" />
+              <img src="/assets/star_icon.png" alt="star_icon" />
+              <img src="/assets/star_dull_icon.png" alt="star_icon" />
             </div>
             <p className="mt-5 text-3xl font-medium">
               {currency}
@@ -99,17 +103,30 @@ const Product = () => {
         {/* DESCRIPTION AND REVIEWS */}
         <div className="mt-20">
           <div className="flex">
-            <b className="border px-5 py-3 text-sm cursor-pointer">Description</b>
-            <p className="border px-5 py-3 text-sm cursor-pointer">Reviews (122)</p>
+            <b className="border px-5 py-3 text-sm cursor-pointer">
+              Description
+            </b>
+            <p className="border px-5 py-3 text-sm cursor-pointer">
+              Reviews (122)
+            </p>
           </div>
           <div className="flex flex-col gap-4 border px-6 py-6 text-sm text-gray-500">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis inventore fugiat quia odit iste...</p>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam ex temporibus placeat! Possimus, nam iure.</p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis
+              inventore fugiat quia odit iste...
+            </p>
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam
+              ex temporibus placeat! Possimus, nam iure.
+            </p>
           </div>
         </div>
         {/* RELATED PRODUCTS */}
         <div>
-          <RelatedProducts category={productData.category} subCategory={productData.subCategory}/>
+          <RelatedProducts
+            category={productData.category}
+            subCategory={productData.subCategory}
+          />
         </div>
       </div>
     </Motion>
