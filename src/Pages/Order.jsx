@@ -1,8 +1,13 @@
 import React from 'react'
+import Motion from '../Components/Motion'
 
 const Order = () => {
   return (
-    <div>Order</div>
+    <Motion>
+    <div>
+      order
+    </div>
+    </Motion>
   )
 }
 
