@@ -12,7 +12,7 @@ const Searchbox = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname.includes('collection')  ) {
+    if (location.pathname.includes('collection',"home")  ) {
       setVisible(true)
     } else {
       setVisible(false)
@@ -30,13 +30,13 @@ const Searchbox = () => {
     <AnimatePresence>
       {showSearch && visible && (
         <motion.div
-          className="border-t border-b bg-[#f4f4f5] text-center overflow-hidden"
+          className="border-t border-b  text-center overflow-hidden"
           initial="closed"
           animate="open"
           exit="closed"
           variants={variants}
         >
-          <div className="inline-flex items-center justify-center border border-gray-400 bg-[#f4f4f5] px-5 py-2 my-5 mx-3 rounded-full w-3/4 sm:w-1/2 ">
+          <div className="inline-flex items-center justify-center border border-gray-400  px-5 py-2 my-5 mx-3 rounded-full w-3/4 sm:w-1/2 ">
             <input
               value={search}
               onChange={(e) => dispatch(setSearch(e.target.value))}

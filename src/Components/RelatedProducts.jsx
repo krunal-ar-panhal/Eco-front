@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Title from './Title';
 import ProductItem from './ProductItem'
-import { Link } from "react-router-dom";
 
 const RelatedProducts = ({ category, subCategory }) => {
   const { Products } = useSelector((state) => state.shop);

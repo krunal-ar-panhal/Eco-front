@@ -1,19 +1,32 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, {  useEffect, useState } from 'react'
 import Title from './Title';
 import ProductItem from './ProductItem';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const LatestCollection = () => {
 
-    const { Products } = useSelector((state) => state.shop)
-    console.log("latest collection products" , Products);
 
     const [latestProduct , setLatestProduct] = useState([]);
-    console.log("latest Product",latestProduct);
+ 
+    const getAllProducts = async () => {
+      try {
+        const response = await axios.get("/api/product/list")
+        console.log("latest response",response);
+        setLatestProduct(response.data.products)
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message)
+      }
+    }
+
+    useEffect(()=>{
+      getAllProducts()
+    },[])
     
 
     useEffect(() => {
-      setLatestProduct(Products.slice(0,10))
+      setLatestProduct(latestProduct.slice(0,10))
     },[])
     
 
@@ -28,7 +41,7 @@ const LatestCollection = () => {
       <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
         {
           latestProduct.map((item,index) => (
-            <ProductItem key={index} id={item.id} image={item.image} name={item.name} price={item.price}/>
+            <ProductItem key={item._id} id={item._id} image={item.image} name={item.name} price={item.price}/>
           ))
         }
       </div>

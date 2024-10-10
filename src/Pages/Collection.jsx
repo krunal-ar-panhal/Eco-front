@@ -3,14 +3,33 @@ import { useSelector } from "react-redux";
 import Title from "../Components/Title";
 import ProductItem from "../Components/ProductItem";
 import Motion from "../Components/Motion";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Collection = () => {
-  const { Products , search , showSearch } = useSelector((state) => state.shop);
+  const {  search , showSearch } = useSelector((state) => state.shop);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [sortType, setSortType] = useState("relavent");
+  const [products , setproducts] = useState([])
+
+
+  const getAllCollection = async () => {
+    try {
+      const response = await axios.get('/api/product/list')
+      console.log("Cellection response",response);
+      setproducts(response.data.products)
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message)
+    }
+  }
+
+  useEffect(()=>{
+    getAllCollection();
+  },[])
 
   const toggleCategory = (e) => {
     if (category.includes(e.target.value)) {
@@ -29,7 +48,7 @@ const Collection = () => {
   };
 
   const applyFilter = () => {
-    let productCopy = Products.slice();
+    let productCopy = products.slice();
 
     if (showSearch && search) {
       productCopy = productCopy.filter((item) =>
@@ -53,7 +72,7 @@ const Collection = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [category, subCategory,search,showSearch]);
+  }, [category, subCategory,search,showSearch,products]);
 
   const sortProduct = () => {
     const fpCopy = filterProducts.slice();
@@ -193,9 +212,9 @@ const Collection = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
             {filterProducts.map((item, index) => (
               <ProductItem
-                key={index}
+                key={item._id}
                 name={item.name}
-                id={item.id}
+                id={item._id}
                 price={item.price}
                 image={item.image}
               />

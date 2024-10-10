@@ -4,32 +4,30 @@ import { useDispatch, useSelector } from "react-redux";
 import Motion from "../Components/Motion";
 import RelatedProducts from "../Components/RelatedProducts";
 import { addToCart } from "../Redux/Shop/ShopSlice";
+import axios from "axios";
 
 const Product = () => {
   const { productId } = useParams();
-  const { Products, currency } = useSelector((state) => state.shop);
-  const cartItems = useSelector((state) => state.shop.cartItems);
-  console.log("Current Cart Items:", cartItems);
-
+  const { currency } = useSelector((state) => state.shop);
   const dispatch = useDispatch();
+
   const [productData, setProductData] = useState(null);
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
 
-  const fetchProductData = () => {
-    Products.forEach((item) => {
-      if (item.id === parseInt(productId)) {
-        setProductData(item);
-        setImage(item.image[0]);
-      }
-    });
-  };
-
   useEffect(() => {
-    if (Products.length) {
-      fetchProductData();
-    }
-  }, [Products, productId]);
+    const getProduct = async () => {
+      try {
+        const response = await axios.get(`/api/product/single/${productId}`);
+        console.log("single product response", response.data);
+        setProductData(response.data.product);  
+        setImage(response.data.product.image[0]); 
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProduct();
+  }, [productId]);
 
   const imagesToDisplay = Array.isArray(productData?.image)
     ? productData.image
@@ -93,7 +91,7 @@ const Product = () => {
             </div>
             <button
               onClick={() => {
-                dispatch(addToCart({ itemId: productData.id, size }));
+                dispatch(addToCart({ itemId: productData._id, size }));  
               }}
               className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700"
             >
