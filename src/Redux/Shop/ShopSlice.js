@@ -5,6 +5,8 @@ const initialState = {
   totalItems: 0,
   totalPrice: 0,
   currency: "₹",
+  search: "", 
+  showSearch: false, 
 };
 
 const shopSlice = createSlice({
@@ -69,13 +71,8 @@ const shopSlice = createSlice({
 });
 
 export const getCartCount = (state) => {
-  let totalCount = 0;
-  for (const item of state.shop.cart) {
-    totalCount += item.quantity;
-  }
-  return totalCount;
+  return state.shop.cart.reduce((totalCount, item) => totalCount + item.quantity, 0);
 };
 
-
-export const { addToCart, updateQuantity, removeFromCart ,setSearch,setShowSearch} = shopSlice.actions;
+export const { addToCart, updateQuantity, removeFromCart, setSearch, setShowSearch } = shopSlice.actions;
 export default shopSlice.reducer;

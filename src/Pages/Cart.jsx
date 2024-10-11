@@ -38,7 +38,7 @@ const Cart = () => {
                 </div>
               </div>
 
-              {/* Main Price */}
+              {/* Main Price */}  
               <div className="text-lg font-semibold">₹{item.price}</div>
 
               {/* Quantity Controls */}
