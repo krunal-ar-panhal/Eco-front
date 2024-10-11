@@ -1,18 +1,14 @@
-import {  createSlice } from "@reduxjs/toolkit";
-import Product from "../../Data/ProductData.json";
-import toast from "react-hot-toast";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  Products: Product,
+  cart: [],
+  totalItems: 0,
+  totalPrice: 0,
   currency: "₹",
-  delievery_fee: 10,
-  search: "",
-  showSearch: false,
-  cartItems: {},
 };
 
 const shopSlice = createSlice({
-  name: "shop",
+  name: 'shop',
   initialState,
   reducers: {
     setSearch: (state, action) => {
@@ -22,55 +18,64 @@ const shopSlice = createSlice({
       state.showSearch = !state.showSearch;
     },
     addToCart: (state, action) => {
-      const { itemId, size } = action.payload;
-
-      if (!size) {
-        toast.error("Please Select a Size");
-      }
-
-      if (!state.cartItems[itemId]) {
-        state.cartItems[itemId] = {};
-      }
-      if (!state.cartItems[itemId][size]) {
-        state.cartItems[itemId][size] = 1;
+      const { product, size } = action.payload;
+      const existingProduct = state.cart.find(
+        (item) => item._id === product._id && item.size === size
+      );
+      if (existingProduct) {
+        existingProduct.quantity += 1;
       } else {
-        state.cartItems[itemId][size] += 1;
+        state.cart.push({ ...product, size, quantity: 1 });
       }
+      state.totalItems = state.cart.reduce(
+        (total, item) => total + item.quantity,
+        0
+      );
+      state.totalPrice = state.cart.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
     },
     updateQuantity: (state, action) => {
-      const { itemId, size, quantity } = action.payload;
-      if (state.cartItems[itemId]) {
-        state.cartItems[itemId][size] = quantity;
+      const { _id, size, quantity } = action.payload;
+      const product = state.cart.find((item) => item._id === _id && item.size === size);
+      if (product) {
+        product.quantity = quantity;
       }
+      state.totalItems = state.cart.reduce(
+        (total, item) => total + item.quantity,
+        0
+      );
+      state.totalPrice = state.cart.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
     },
-   
+    removeFromCart: (state, action) => {
+      const { _id, size } = action.payload;
+      state.cart = state.cart.filter(
+        (item) => !(item._id === _id && item.size === size)
+      );
+      state.totalItems = state.cart.reduce(
+        (total, item) => total + item.quantity,
+        0
+      );
+      state.totalPrice = state.cart.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+    },
   },
 });
 
-export const getCartTotalPrice = (state) => {
-  let totalPrice = 0;
-  for (const itemId in state.shop.cartItems) {
-    const product = state.shop.Products.find((Product) => Product.id === parseInt(itemId));
-    if (product) {
-      for (const size in state.shop.cartItems[itemId]) {
-        const quantity = state.shop.cartItems[itemId][size];
-        totalPrice += product.price * quantity;
-      }
-    }
-  }
-  return totalPrice;
-};
-
-
 export const getCartCount = (state) => {
   let totalCount = 0;
-  for (const item in state.shop.cartItems) {
-    for (const size in state.shop.cartItems[item]) {
-      totalCount += state.shop.cartItems[item][size];
-    }
+  for (const item of state.shop.cart) {
+    totalCount += item.quantity;
   }
   return totalCount;
 };
 
-export const { setSearch, setShowSearch, addToCart,updateQuantity } = shopSlice.actions;
+
+export const { addToCart, updateQuantity, removeFromCart ,setSearch,setShowSearch} = shopSlice.actions;
 export default shopSlice.reducer;

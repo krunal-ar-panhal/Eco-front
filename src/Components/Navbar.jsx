@@ -3,14 +3,14 @@ import { Link, NavLink } from "react-router-dom";
 import { CiSearch, CiUser, CiShoppingCart, CiMenuFries } from "react-icons/ci";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowSearch , getCartCount} from "../Redux/Shop/ShopSlice";
+import { setShowSearch, getCartCount } from "../Redux/Shop/ShopSlice";
 
 const Navbar = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
 
-  const cartCount = useSelector(getCartCount)
-  console.log("cart count",cartCount);
-  
+  const cartCount = useSelector(getCartCount);
+  console.log("cart count", cartCount);
+
   const dispatch = useDispatch();
 
   return (
@@ -73,9 +73,8 @@ const Navbar = () => {
             <Link to="/cart" className="relative">
               <CiShoppingCart className="w-5 cursor-pointer font-bold" />
               <p className="absolute right-[-5px] w-4 bottom-[-5px] text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
-    {cartCount}
-</p>
-
+                {cartCount}
+              </p>
             </Link>
           </div>
 

@@ -1,117 +1,93 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Title from "../Components/Title";
-import { updateQuantity } from "../Redux/Shop/ShopSlice";
+import { updateQuantity, removeFromCart } from "../Redux/Shop/ShopSlice";
 import CartTotal from "../Components/CartTotal";
-import Motion from "../Components/Motion";
-import { Link } from "react-router-dom";
+import { FaPlus, FaMinus } from "react-icons/fa";
 
 const Cart = () => {
-  const { Products, currency, cartItems } = useSelector(
-    (state) => state.shop
-  );
+  const { cart } = useSelector((state) => state.shop);
   const dispatch = useDispatch();
 
-  const [cartData, setCartData] = useState([]);
-
-  useEffect(() => {
-    const tempData = [];
-
-    for (const items in cartItems) {
-      for (const item in cartItems[items]) {
-        if (cartItems[items][item] > 0) {
-          tempData.push({
-            id: parseInt(items),
-            size: item,
-            quantity: cartItems[items][item],
-          });
-        }
-      }
+  const handleQuantityChange = (_id, size, quantity) => {
+    if (quantity > 0) {
+      dispatch(updateQuantity({ _id, size, quantity }));
     }
-    console.log("tempData", tempData);
-    setCartData(tempData);
-  }, [cartItems]);
+  };
 
   return (
-    <Motion>
-    <div className="border-t pt-14">
-      <div className="text-2xl mb-3">
-        <Title text1={"YOUR"} text2={"CART"} />
-      </div>
-      <div>
-        {cartData.map((item, index) => {
-          const productData = Products.find(
-            (Product) => Product.id === item.id
-          );
-          if (!productData) {
-            return null;
-          }
-          return (
+    <div className="container mx-auto py-10">
+      {cart.length > 0 ? (
+        <div className="grid gap-6">
+          {cart.map((item) => (
             <div
-              key={index}
-              className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4"
+              key={`${item._id}-${item.size}`}
+              className="flex flex-col md:flex-row items-center gap-6 p-4 border-b"
             >
-              <div className="flex items-center gap-6">
-                <img
-                  src={productData.image[0]}
-                  alt="product_image"
-                  className="w-16 sm:w-20"
-                />
-                <div>
-                  <p className="text-sm sm:text-lg font-medium">
-                    {productData.name}
-                  </p>
-                  <div className="flex items-center gap-5 mt-2">
-                    <p>
-                      {currency}
-                      {productData.price}
-                    </p>
-                    <p className="px-2 sm:px-3 sm:py-1 border bg-slate-300">
-                      {item.size}
-                    </p>
-                  </div>
+              {/* Product Image */}
+              <img
+                src={item.image[0]}
+                alt={item.name}
+                className="w-20 md:w-32 rounded-lg"
+              />
+
+              {/* Product Info */}
+              <div className="flex-1">
+                <div className="text-lg font-semibold">{item.name}</div>
+                <div className="text-sm text-center font-semibold items-center mt-1 bg-gray-200 hover:bg-gray-300 w-9 text-gray-700 p-2 rounded">
+                  {item.size}
                 </div>
               </div>
-              <div>
-                <input
-                  type="number"
-                  min={1}
-                  defaultValue={item.quantity}
-                  className="border border-e-black    max-w-20 px-1 sm:px-2 py-1 "
-                />
-              </div>
-              <div>
-                <img
+
+              {/* Main Price */}
+              <div className="text-lg font-semibold">₹{item.price}</div>
+
+              {/* Quantity Controls */}
+              <div className="flex items-center space-x-3">
+                <button
                   onClick={() =>
-                    dispatch(
-                      updateQuantity({
-                        itemId: item.id,
-                        size: item.size,
-                        quantity: 0,
-                      })
-                    )
+                    handleQuantityChange(item._id, item.size, item.quantity - 1)
                   }
-                  src="/assets/bin_icon.png"
-                  alt="bin"
-                  className="w-4 mr-4 sm:w-5 cursor-pointer"
-                />
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-700 p-2 rounded"
+                >
+                  <FaMinus />
+                </button>
+                <div className="w-10 text-center text-lg">{item.quantity}</div>
+                <button
+                  onClick={() =>
+                    handleQuantityChange(item._id, item.size, item.quantity + 1)
+                  }
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-700 p-2 rounded"
+                >
+                  <FaPlus />
+                </button>
               </div>
+
+              {/* Updated Price */}
+              <div className="text-lg font-semibold">
+                ₹{(item.price * item.quantity).toFixed(2)}
+              </div>
+
+              {/* Remove Button */}
+              <button
+                onClick={() =>
+                  dispatch(removeFromCart({ _id: item._id, size: item.size }))
+                }
+                className="text-red-500 hover:underline ml-6"
+              >
+                X
+              </button>
             </div>
-          );
-        })}
-        
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-lg">Your cart is empty</p>
+      )}
+
+      {/* Cart Total Component */}
+      <div className="mt-10">
+        <CartTotal />
       </div>
-      <div className="flex flex-col justify-end mt-12">
-            <CartTotal />
-            <Link to='/place-order'>
-            <div className="bg-black w-auto active:opacity-75 text-white text-sm my-8 px-8 py-3 text-center cursor-pointer">
-              PROCEED TO CHECKOUT
-            </div>
-            </Link>
-          </div>
-     
     </div>
-    </Motion>
   );
 };
 

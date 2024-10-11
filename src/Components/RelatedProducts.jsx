@@ -1,43 +1,50 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import Title from './Title';
-import ProductItem from './ProductItem'
+import axios from "axios";
+import Title from "./Title";
+import ProductItem from "./ProductItem";
 
 const RelatedProducts = ({ category, subCategory }) => {
-  const { Products } = useSelector((state) => state.shop);
-  
   const [related, setRelated] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    
-    if (Products.length > 0) {
-      let productCopy = Products.slice();
-      productCopy = productCopy.filter((item) => category === item.category);
-      productCopy = productCopy.filter(
-        (item) => subCategory === item.subCategory
-      );
-      console.log(productCopy.slice(0, 5));
-      setRelated(productCopy.slice(0, 5));
-    }
-  }, [Products,category,subCategory]);
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("/api/product/list");
+        console.log("API Response:", response.data);
+        const productList = response.data.products;
+        let filteredProducts = productList.filter(
+          (item) => category === item.category
+        );
+        filteredProducts = filteredProducts.filter(
+          (item) => subCategory === item.subCategory
+        );
+        setRelated(filteredProducts.slice(0, 5));
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, [category, subCategory]);
 
   return (
     <div className="my-24">
-        <div className="text-center text-3xl py-2">
-            <Title text1={'RELATED'} text2={'PRODUCTS'}/>
-        </div>
-    
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-            {related.map((item, index) => (
-              <ProductItem
-                key={index}
-                name={item.name}
-                id={item.id}
-                price={item.price}
-                image={item.image}
-              />
-            ))}
-          </div>
+      <div className="text-center text-3xl py-2">
+        <Title text1={"RELATED"} text2={"PRODUCTS"} />
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
+        {related.map((item, index) => (
+          <ProductItem
+            key={item._id}
+            name={item.name}
+            id={item._id}
+            price={item.price}
+            image={item.image}
+          />
+        ))}
+      </div>
     </div>
   );
 };

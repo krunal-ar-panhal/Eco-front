@@ -20,8 +20,8 @@ const Product = () => {
       try {
         const response = await axios.get(`/api/product/single/${productId}`);
         console.log("single product response", response.data);
-        setProductData(response.data.product);  
-        setImage(response.data.product.image[0]); 
+        setProductData(response.data.product);
+        setImage(response.data.product.image[0]);
       } catch (error) {
         console.log(error);
       }
@@ -91,7 +91,7 @@ const Product = () => {
             </div>
             <button
               onClick={() => {
-                dispatch(addToCart({ itemId: productData._id, size }));  
+                dispatch(addToCart({ product: productData, size }));
               }}
               className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700"
             >
