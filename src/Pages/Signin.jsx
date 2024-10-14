@@ -11,6 +11,7 @@ const Signin = () => {
   const [name, setName] = useState(""); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -68,14 +69,23 @@ const Signin = () => {
           className="w-full px-3 py-2 border border-gray-800"
         />
         
-        <input
-          type="password"
-          placeholder="Password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-800"
-        />
+        <div className="w-full relative">
+          <input
+            type={showPassword ? "text" : "password"} 
+            placeholder="Password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-800"
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-2 text-sm text-gray-600"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
         
         <div className="w-full flex justify-between text-sm mt-[8px]">
           <p className="cursor-pointer">Forget your password?</p>

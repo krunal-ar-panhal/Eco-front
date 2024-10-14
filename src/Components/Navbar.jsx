@@ -4,14 +4,17 @@ import { CiSearch, CiUser, CiShoppingCart, CiMenuFries } from "react-icons/ci";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowSearch, getCartCount } from "../Redux/Shop/ShopSlice";
+import { clearToken, selectIsLoggedIn } from "../Redux/Auth/authSlice";
 
 const Navbar = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
-
   const cartCount = useSelector(getCartCount);
-  console.log("cart count", cartCount);
-
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(clearToken());
+  };
 
   return (
     <>
@@ -54,17 +57,31 @@ const Navbar = () => {
 
           <div className="group relative">
             <CiUser className="w-5 cursor-pointer font-bold" />
-            <div className="group-hover:block hidden absolute dropdown-menu left-1/2 transform -translate-x-1/2 pt-4">
-              <div className="flex flex-col gap-2 md:w-36 w-28  py-3 px-5 bg-slate-100 text-gray-500 rounded">
+            <div className="group-hover:block hidden absolute dropdown-menu left-1/2 transform -translate-x-1/2 pt-4 z-10">
+              <div className="flex flex-col gap-2 md:w-36 w-28 py-3 px-5 bg-slate-100 text-gray-500 rounded shadow-lg">
                 <p className="cursor-pointer hover:text-black text-sm">
                   My Profile
                 </p>
                 <p className="cursor-pointer hover:text-black text-sm">
                   Orders
                 </p>
-                <p className="cursor-pointer hover:text-black text-sm">
-                  Logout
-                </p>
+                {isLoggedIn ? (
+                  <Link to="/signin ">
+                    <p
+                      className="cursor-pointer hover:text-black text-sm"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </p>
+                  </Link>
+                ) : (
+                  <Link
+                    to="/Signin"
+                    className="cursor-pointer hover:text-black text-sm"
+                  >
+                    Login
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -103,9 +120,9 @@ const Navbar = () => {
 
               <div
                 onClick={() => setMobileMenu(false)}
-                className="flex flex-col mt-3  "
+                className="flex flex-col mt-3"
               >
-                <NavLink to="/" className="border-b-2  py-2 pl-6">
+                <NavLink to="/" className="border-b-2 py-2 pl-6">
                   Home
                 </NavLink>
                 <NavLink to="/collection" className="border-b-2 py-2 pl-6">
