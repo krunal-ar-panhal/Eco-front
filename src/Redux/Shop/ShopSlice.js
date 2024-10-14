@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import toast from 'react-hot-toast';
 
 const initialState = {
   cart: [],
@@ -24,6 +25,10 @@ const shopSlice = createSlice({
       const existingProduct = state.cart.find(
         (item) => item._id === product._id && item.size === size
       );
+      if (!size) {
+        toast.error("Please select the size")
+        return
+      }
       if (existingProduct) {
         existingProduct.quantity += 1;
       } else {

@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const CartTotal = () => {
   const { totalItems, totalPrice } = useSelector((state) => state.shop);
@@ -23,11 +24,13 @@ const CartTotal = () => {
         </div>
 
         {/* Proceed to Checkout Button */}
+        <Link to='/place-order'>
         <div className="mt-6 ">
           <button className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition duration-200">
             Proceed To Checkout
           </button>
         </div>
+        </Link>
       </div>
     </div>
   );
